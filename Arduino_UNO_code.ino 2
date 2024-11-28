@@ -1,0 +1,55 @@
+int buzzer = 7;
+int Sensor = A0;   // Connecting the MQ2 Sensor at A0 port
+int Lmotor_1 = 10;
+int Lmotor_2 = 11;
+int Rmotor_1 = 12;
+int Rmotor_2 = 13;
+
+void setup()
+{
+  pinMode(Sensor, INPUT);   
+  pinMode(buzzer, OUTPUT);
+  pinMode(Lmotor_1, OUTPUT);
+  pinMode(Lmotor_2, OUTPUT);
+  pinMode(Rmotor_1, OUTPUT);
+  pinMode(Rmotor_2, OUTPUT);
+  Serial.begin(9600);
+}
+
+void loop()
+{
+  int Sensorin = analogRead(Sensor);   // Read analog value from MQ2 sensor
+  Serial.println(Sensorin);
+  delay(100);
+  if (Sensorin > 230)   // Threshold Value of 500 
+  {
+    tone(buzzer, 500, 1000);            // Turn on Buzzer
+    // STOP
+    digitalWrite(Lmotor_1, LOW);
+    digitalWrite(Lmotor_2, LOW);
+    digitalWrite(Rmotor_1, LOW);
+    digitalWrite(Rmotor_2, LOW);
+    delay(500);
+    // BACKWARD
+    digitalWrite(Lmotor_1, LOW);
+    digitalWrite(Lmotor_2, HIGH);
+    digitalWrite(Rmotor_1, LOW);
+    digitalWrite(Rmotor_2, HIGH);
+    delay(500);
+    // RIGHT TURN
+    digitalWrite(Lmotor_1, HIGH);
+    digitalWrite(Lmotor_2, LOW);
+    digitalWrite(Rmotor_1, LOW);
+    digitalWrite(Rmotor_2, LOW);
+    delay(1000);
+  }
+  else
+  {
+    noTone(buzzer);                   // Turn off Buzzer
+    // FORWARD
+    digitalWrite(Lmotor_1, HIGH);
+    digitalWrite(Lmotor_2, LOW);
+    digitalWrite(Rmotor_1, HIGH);
+    digitalWrite(Rmotor_2, LOW);
+  }
+}
